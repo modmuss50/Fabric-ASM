@@ -15,12 +15,11 @@ buildscript {
 		}
 	}
 	dependencies {
-        classpath 'com.github.Chocohead:fabric-loom:f2fc524'
+        classpath 'net.fabricmc:fabric-loom:0.2.6-SNAPSHOT'
 	}
 }
 
 apply plugin: "fabric-loom"
-import net.fabricmc.loom.task.RemappingJar;
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -30,13 +29,12 @@ version = "1.8"
 
 minecraft {
 	refmapName = "mixins.mm.refmap.json"
-	AT = file("example/resources/access-transformations.txt")
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:1.14 Pre-Release 3"
-	mappings "net.fabricmc:yarn:1.14 Pre-Release 3+build.1:tiny@gz"
-	modCompile "net.fabricmc:fabric-loader:0.6.2+build.166"
+	mappings "net.fabricmc:yarn:1.14 Pre-Release 3+build.1"
+	modCompile "net.fabricmc:fabric-loader:0.7.0+build.171"
 }
 
 sourceSets {
@@ -60,26 +58,12 @@ sourceSets {
 	}
 }
 
-jar {
-	AT.include = false
-}
-
-task exampleJar(type: RemappingJar, dependsOn: exampleClasses) {
-	classifier = "example"
-	from sourceSets.example.output
-}
-
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = "sources"
 	from sourceSets.main.allSource
 }
 
-build.dependsOn exampleJar
-
 artifacts {
-	archives(exampleJar) {
-		builtBy exampleJar
-	}
 	archives(sourcesJar) {
 		builtBy sourcesJar
 	}
